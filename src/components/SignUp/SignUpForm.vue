@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import { mapActions } from 'vuex';
 import useValidate from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
@@ -54,16 +55,39 @@ export default {
             password: { required, minLength: minLength(10) },
         }
     },
+    mounted() {
+        let user = localStorage.getItem('user-info');
+        if (user) {
+            this.redirectTo({ val: 'home' });
+        }
+    },
     methods: {
         /* loginPage(){
             // Use name in router file
             this.$router.push({name:'login'});
         }, */
         ...mapActions(['redirectTo']),
-        signUpNow() {
+        async signUpNow() {
             this.v$.$validate();
             if (!this.v$.$error) {
-                console.log('Form Validated Successfully');
+
+                let result = await axios.post('http://localhost:3000/users', {
+                    name: this.name,
+                    email: this.email,
+                    password: this.password,
+                });
+
+                if (result.status == 201) { 
+                    console.log("Added New User Successfully");
+                    // save user data in local storage
+                    localStorage.setItem("user-info", JSON.stringify(result.data));
+                    console.log(result.data);
+                    // redirect to home page
+                    this.redirectTo({ val: 'home' });
+                } else {
+                    console.log("Error On Adding New User");
+                }
+
             } else {
                 console.log('Form Validation Failed');
             }

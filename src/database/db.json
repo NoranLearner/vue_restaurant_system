@@ -1,24 +1,16 @@
 {
-    "posts": [
-        {
-            "id": 1,
-            "title": "json-server",
-            "author": "typicode"
-        },
-        {
-            "title": "html",
-            "author": "NNN",
-            "id": 2
-        }
-    ],
-    "comments": [
-        {
-            "id": 1,
-            "body": "some comment",
-            "postId": 1
-        }
-    ],
-    "profile": {
-        "name": "typicode"
+  "users": [
+    {
+      "name": "salah Bediwi",
+      "email": "salah@gmail.com",
+      "password": "salah Bediwi",
+      "id": 1
+    },
+    {
+      "name": "Ahmed Ahmed",
+      "email": "ahmed@gmail.com",
+      "password": "Ahmed Ahmed",
+      "id": 2
     }
+  ]
 }

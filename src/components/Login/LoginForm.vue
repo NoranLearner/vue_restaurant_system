@@ -31,10 +31,17 @@
                 </button>
             </div>
         </div>
+        <br/>
+        <div class="row g-3 align-items-center">
+            <div class="col-auto d-block mx-auto error-feedback">
+                {{ userNotFoundError }}
+            </div>
+        </div>
     </form>
 </template>
 
 <script>
+import axios from "axios";
 import { mapActions } from "vuex";
 import useValidate from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
@@ -62,7 +69,14 @@ export default {
     },
     data() {
         return {
+            userNotFoundError:"",
         };
+    },
+    mounted() {
+        let user = localStorage.getItem('user-info');
+        if (user) {
+            this.redirectTo({ val: 'home' });
+        }
     },
     methods: {
         /* signupPage(){
@@ -70,10 +84,23 @@ export default {
                 this.$router.push({name:'sign-up'});
             }, */
         ...mapActions(["redirectTo"]),
-        loginUser() {
+        async loginUser() {
             this.v$.$validate();
             if (!this.v$.$error) {
                 console.log("Form Validated Successfully");
+
+                let result = await axios.get(
+                    `http://localhost:3000/users?email=${this.state.email}&password=${this.state.password}`
+                );
+                // console.log(result.data);
+                if (result.status == 200 && result.data.length > 0) { 
+                    // save user data in local storage
+                    localStorage.setItem("user-info", JSON.stringify(result.data[0]));
+                    // redirect to home page
+                    this.redirectTo({ val: 'home' });
+                } else {
+                    this.userNotFoundError = "User Not Found";
+                }
             } else {
                 console.log("Form Validation Failed");
             }
