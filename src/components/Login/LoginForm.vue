@@ -1,6 +1,6 @@
 <template>
     <form @click.prevent>
-        <h1>Login</h1>
+        <h1 class="text-center">Login</h1>
         <div class="row g-3 align-items-center">
             <div class="col-auto d-block mx-auto">
                 <input type="email" class="form-control" placeholder="Enter Your Email" v-model="state.email" />
