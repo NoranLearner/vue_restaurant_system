@@ -1,24 +1,36 @@
 <template>
-  <Navbar/>
-  <div class="home">
-    <h1>This is home page</h1>
+  <div class="container">
+    <Navbar />
+    <p class="text-end">
+      Welcome {{ userName }}
+      <router-link :to="{ name: 'profile' }">
+        <button class="btn btn-info text-white" type="button">Profile</button>
+      </router-link>
+    </p>
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/Header/Navbar.vue";
-import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
 export default {
-  name: 'HomeView',
-  components:{ Navbar },
-  mounted() {
-        let user = localStorage.getItem('user-info');
-        if (!user) {
-            this.redirectTo({ val: 'sign-up' });
-        }
-    },
-  methods: {
-    ...mapActions(['redirectTo']),
+  name: "HomeView",
+  data() {
+    return {
+      userName: "",
+    };
   },
-}
+  components: { Navbar },
+  mounted() {
+    let user = localStorage.getItem("user-info");
+    if (!user) {
+      this.redirectTo({ val: "sign-up" });
+    } else {
+      this.userName = JSON.parse(user).name;
+    }
+  },
+  methods: {
+    ...mapActions(["redirectTo"]),
+  },
+};
 </script>
