@@ -4,6 +4,7 @@ import SignUpView from '../views/SignUpView.vue'
 import LoginView from '../views/LoginView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import UpdateProfileView from '../views/UpdateProfileView.vue'
+import ErrorPageView from '../views/ErrorPageView.vue'
 
 const routes = [
   {
@@ -39,25 +40,18 @@ const routes = [
     name: 'update-profile',
     component: UpdateProfileView
   },
+  // Last Stays
+  {
+    path: '/:catchAll(.*)',
+    name: 'errorPage',
+    component: ErrorPageView
+  }
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 });
-
-/* router.beforeEach((to, from, next) => {
-  if (to.params.pageTitle !== undefined) {
-    document.title = `${to.name} | ${to.params.pageTitle} | ${process.env.VUE_APP_TITLE}`;
-  } else {
-    if (to.name == null) {
-      document.title = `Unknown Page | ${process.env.VUE_APP_TITLE}`;
-    } else {
-      document.title = `${to.name} | ${process.env.VUE_APP_TITLE}`;
-    }
-  }
-  next();
-}); */
 
 router.beforeEach((to, from, next) => {
   // console.log(to);
