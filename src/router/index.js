@@ -44,6 +44,36 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
-})
+});
+
+/* router.beforeEach((to, from, next) => {
+  if (to.params.pageTitle !== undefined) {
+    document.title = `${to.name} | ${to.params.pageTitle} | ${process.env.VUE_APP_TITLE}`;
+  } else {
+    if (to.name == null) {
+      document.title = `Unknown Page | ${process.env.VUE_APP_TITLE}`;
+    } else {
+      document.title = `${to.name} | ${process.env.VUE_APP_TITLE}`;
+    }
+  }
+  next();
+}); */
+
+router.beforeEach((to, from, next) => {
+  // console.log(to);
+  // console.log(from);
+  // document.title = "Hello";
+  // document.title = to.name;
+  if (to.params.pageTitle !== undefined) {
+    document.title = `${to.name} | ${to.params.pageTitle} | ${process.env.VUE_APP_TITLE}`;
+  } else {
+    if (to.name == null) {
+      document.title = `Unknown Page | ${process.env.VUE_APP_TITLE}`;
+    } else {
+      document.title = `${to.name} | ${process.env.VUE_APP_TITLE}`;
+    }
+  }
+  next();
+});
 
 export default router
