@@ -23,6 +23,63 @@
             <p class="text-muted">{{ locAddress }}</p>
         </div>
 
+
+        <div class="mb-3" v-if="listOfUserCategories.length>0">
+            <router-link :to="{ name: 'delete-all-items', params: { locId: locationId } }">
+                <button type="button" class="btn btn-danger">
+                    Delete All Items
+                </button>
+            </router-link>
+        </div>
+
+        <div class="each-category">
+            <div class="" v-for="(cat, i) in listOfUserCategories" :key="i">
+                <div class="row">
+                    <div class="catName row col-12">
+                        <h5 class="text-center bg-light p-1">{{ cat.name }}</h5>
+                    </div>
+                    <div :class="{ 'col-xs-12 col-sm-4 px-4': cat.id == item.catId }"
+                        v-for="(item, x) in listOfUserItems" :key="x" v-show="cat.id == item.catId">
+                        <div :class="{ 'each-item': cat.id == item.catId }" v-if="cat.id == item.catId">
+                            <h6 class="item-name">Item: {{ item.name }}</h6>
+                            <p class="item-desc text-muted">
+                                "Description: {{ item.description }} "
+                            </p>
+                            <div>
+                                <span class="available-items float-start">Available Quantity: {{
+                                        numberWithCommas(item.qty)
+                                }}</span>
+                                <span class="item-price float-end">
+                                    Price: {{ numberWithCommas(item.price) }} $
+                                </span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="text-white">
+                                <router-link :to="{
+                                    name: 'update-item',
+                                    params: { locationId: locationId, itemId: item.id },
+                                }">
+                                    <button class="btn btn-success float-start">Update</button>
+                                </router-link>
+                                <router-link :to="{
+                                    name: 'delete-item', 
+                                    params: { locationId: locationId, itemId: item.id}}
+                                ">
+                                    <button class="btn btn-danger float-end">Delete</button>
+                                </router-link>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+            </div>
+        </div>
+
+        <!-- ---------------------------------------- -->
+
         <!-- <div>
             Is User Logged In? {{ isUserLoggedIn }}
             <br/>
@@ -34,6 +91,17 @@
             <br />
         </div> -->
 
+        <!-- ---------------------------------------- -->
+        <!-- 
+        {{ listOfUserCategories }}
+
+        <hr>
+
+        {{ listOfUserItems }}
+
+        
+        -->
+        <!-- ---------------------------------------- -->
     </div>
 </template>
 
@@ -56,6 +124,8 @@ export default {
             locationId: this.$route.params.locationId,
             locName: "",
             locAddress: "",
+            listOfUserCategories: [],
+            listOfUserItems: [],
         };
     },
     computed: {
@@ -85,6 +155,10 @@ export default {
                 redirectToPage: "home",
             });
             this.getLocationInfo(this.userId, this.locationId);
+
+            this.getCurrentUserCategories(this.userId, this.locationId);
+
+            this.getCurrentUserItems(this.userId, this.locationId);
         }
     },
     methods: {
@@ -105,11 +179,44 @@ export default {
                 this.locAddress = locDetails[0].address;
             }
         },
-    }
-}
+        async getCurrentUserCategories(userId, locId) {
+            let result = await axios.get(
+                `http://localhost:3000/categories?userId=${userId}&locationId=${locId}`
+            );
+            if (result.status == 200) {
+                this.listOfUserCategories = result.data;
+            }
+        },
+        async getCurrentUserItems(userId, locId) {
+            let result = await axios.get(
+                `http://localhost:3000/items?userId=${userId}&locId=${locId}`
+            );
+            if (result.status == 200) {
+                this.listOfUserItems = result.data;
+            }
+        },
+        numberWithCommas(x) {
+            return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        },
+    },
+};
 </script>
 
 <style scoped>
 .mb {
     margin-bottom: 0;
-}</style>
+}
+
+.catName {
+    color: teal;
+    font-weight: bold;
+}
+
+.item-name {
+    color: darkgoldenrod;
+}
+
+.item-price {
+    color: firebrick;
+}
+</style>
