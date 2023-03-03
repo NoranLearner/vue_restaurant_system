@@ -1,4 +1,5 @@
 <template>
+
     <div class="container">
 
         <Navbar />
@@ -6,13 +7,19 @@
         <form @click.prevent>
 
             <div class="row g-3 align-items-center">
-                <div class="col-auto d-block mx-auto">
-                    <h1>Delete All Locations</h1>
+                <div class="col-auto d-block mx-auto text-center">
+                    <h1>Delete All Categories</h1>
                     <hr>
                     <p class="text-danger">
-                        Are you sure you want to delete all locations ?
+                        Are you sure you want to delete all categories for this location?
                     </p>
-                    <span class="text-muted">It will also delete all related items and categories...., Be careful</span>
+                    <div class="text-center">
+                        <h1 class="mb">{{ locName }}</h1>
+                        <p class="text-muted">{{ locAddress }}</p>
+                    </div>
+                    <p class="text-danger">
+                        When deleting all categories, Their related menu items will be deleted as well ....
+                    </p>
                     <hr>
                 </div>
             </div>
@@ -21,7 +28,7 @@
                 <div class="col-auto d-block mx-auto">
                     <button class="btn btn-info text-white" @click="goBack()">Go Back</button>
                     &nbsp;&nbsp;&nbsp;
-                    <button class="btn btn-danger text-white" @click="deleteAll()">Delete All Now</button>
+                    <button class="btn btn-danger text-white" @click="deleteAllCategories()">Delete All Now</button>
                 </div>
             </div>
 
@@ -39,26 +46,28 @@
         </form>
 
     </div>
+
 </template>
 
 <script>
 
 import axios from "axios";
-// For redirect to links
 import { mapActions } from "vuex";
 import Navbar from '@/components/Header/Navbar.vue';
 
 export default {
-    name: 'DeleteAllLocation',
+    name: 'DeleteAllCategories',
     components: {
         Navbar
     },
     data() {
         return {
+            locId: this.$route.params.locationId,
             userId: '',
-            allLocationId: [],
-            allCatsIdIs: [],
+            locName: "",
+            locAddress: "",
             allItemsIdIs: [],
+            allCatsIdIs: [],
             successMessage: '',
             errorMessage: '',
         }
@@ -68,59 +77,53 @@ export default {
         if (!user) {
             this.redirectTo({ val: 'sign-up' });
         } else {
+            
             this.userId = JSON.parse(user).id;
 
-            // All Locations
-            // http://localhost:3000/locations?userId=2
-            let result = await axios.get(`http://localhost:3000/locations?userId=${this.userId}`);
+            this.getLocationInfo(this.userId, this.locId);
+
+            // All Items in This Location (KFC Restaurant)
+            // http://localhost:3000/items?locId=3
+            let result = await axios.get(`http://localhost:3000/items?locId=${this.locId}`);
             let resultLength = result.data.length;
             for (var i = 0; i < resultLength; i++) {
-                this.allLocationId.push(result.data[i].id);
+                this.allItemsIdIs.push(result.data[i].id);
             }
 
-            // All Categories
-            // http://localhost:3000/categories?userId=2
-            let resultCat = await axios.get(`http://localhost:3000/categories?userId=${this.userId}`);
+            // All Categories in This Location (KFC Restaurant)
+            // http://localhost:3000/categories?locationId=3
+            // write locId or locationId depend on db.json file (database)
+            let resultCat = await axios.get(`http://localhost:3000/categories?locationId=${this.locId}`);
             let resultCatLength = resultCat.data.length;
             for (var i = 0; i < resultCatLength; i++) {
                 this.allCatsIdIs.push(resultCat.data[i].id);
             }
 
-            // All Items
-            // http://localhost:3000/items?userId=2
-            let resultItems = await axios.get(`http://localhost:3000/items?userId=${this.userId}`);
-            let resultItemsLength = resultItems.data.length;
-            for (var i = 0; i < resultItemsLength; i++) {
-                this.allItemsIdIs.push(resultItems.data[i].id);
-            }
-
         }
     },
     methods: {
+        
         ...mapActions(['redirectTo']),
+
         goBack() {
-            // redirect to home page
-            this.redirectTo({ val: 'home' });
+            this.$router.push({ name: "view-categories", params: { locationId: this.locId } });
         },
-        async deleteAll() {
 
-            // For Items
-            let allItemsResults = [];
-            for (var i = 0; i < this.allItemsIdIs.length; i++) {
-                let result = await axios.delete(`http://localhost:3000/items/${this.allItemsIdIs[i]}`);
-
-                if (result.status == 200) {
-                    allItemsResults.push(true);
-                } else {
-                    allItemsResults.push(false);
-                }
+        async getLocationInfo(userId, locId) {
+            let result = await axios.get(`http://localhost:3000/locations?userId=${userId}&id=${locId}`);
+            let locDetails = [];
+            if (result.status == 200) {
+                locDetails = result.data;
+                this.locName = locDetails[0].name;
+                this.locAddress = locDetails[0].address;
             }
+        },
 
-            // For Categories
+        async deleteAllCategories() {
+
             let allCatsResults = [];
             for (var i = 0; i < this.allCatsIdIs.length; i++) {
                 let result = await axios.delete(`http://localhost:3000/categories/${this.allCatsIdIs[i]}`);
-
                 if (result.status == 200) {
                     allCatsResults.push(true);
                 } else {
@@ -128,33 +131,34 @@ export default {
                 }
             }
 
-            // For Location
-            // Code of location must in final
-            let allResults = [];
-            for (var i = 0; i < this.allLocationId.length; i++) {
-                let result = await axios.delete(`http://localhost:3000/locations/${this.allLocationId[i]}`);
-
+            let allItemsResults = [];
+            for (var i = 0; i < this.allItemsIdIs.length; i++) {
+                let result = await axios.delete(`http://localhost:3000/items/${this.allItemsIdIs[i]}`);
                 if (result.status == 200) {
-                    allResults.push(true);
+                    allItemsResults.push(true);
                 } else {
-                    allResults.push(false);
+                    allItemsResults.push(false);
                 }
             }
 
-            if (!allItemsResults.includes(false) && !allCatsResults.includes(false) && !allResults.includes(false)) {
-                // All deleted successfully
-                this.successMessage = 'Delete All Locations Successfully';
+            if (!allCatsResults.includes(false) && !allItemsResults.includes(false)) {
+                this.successMessage = 'Category and Related Items are all deleted Successfully';
                 this.errorMessage = '';
                 setTimeout(() => {
-                    this.redirectTo({ val: 'home' });
+                    this.$router.push({ name: "home" });
                 }, 2000);
             } else {
                 this.successMessage = '';
                 this.errorMessage = 'Something went wrong, Try again';
             }
+
+
         },
+
     },
 }
 </script>
 
-<style></style>
+<style>
+
+</style>

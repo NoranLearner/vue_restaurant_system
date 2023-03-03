@@ -9,6 +9,11 @@ import DeleteLocation from '@/components/Locations/DeleteLocation.vue'
 import DeleteAllLocation from '@/components/Locations/DeleteAllLocation.vue'
 import UpdateLocation from '@/components/Locations/UpdateLocation.vue'
 import Menu from '@/components/Menu/Menu.vue'
+import ViewCategories from '@/components/Menu/ViewCategories.vue'
+import AddNewCategory from '@/components/Menu/AddNewCategory.vue'
+import UpdateCategory from '@/components/Menu/UpdateCategory.vue'
+import DeleteCategory from '@/components/Menu/DeleteCategory.vue'
+import DeleteAllCategories from '@/components/Menu/DeleteAllCategories.vue'
 import ErrorPageView from '../views/ErrorPageView.vue'
 
 const routes = [
@@ -69,6 +74,31 @@ const routes = [
     path: '/menu/location/:locationId',
     name: 'menu',
     component: Menu
+  },
+  {
+    path: '/menu/categories/view/:locationId',
+    name: 'view-categories',
+    component: ViewCategories
+  },
+  {
+    path: '/menu/categories/add/:locationId',
+    name: 'add-new-category',
+    component: AddNewCategory
+  },
+  {
+    path: '/menu/categories/update/:locationId/:catId',
+    name: 'update-category',
+    component: UpdateCategory
+  },
+  {
+    path: '/menu/categories/delete/:locationId/:catId',
+    name: 'delete-category',
+    component: DeleteCategory
+  },
+  {
+    path: '/menu/categories/delete-all/:locationId',
+    name: 'delete-all-categories',
+    component: DeleteAllCategories
   },
   // Last Stays
   {

@@ -72,7 +72,23 @@
       "userId": 2,
       "locationId": 3,
       "id": 3
+    },
+    {
+      "name": "BTD",
+      "userId": 2,
+      "locationId": 1,
+      "id": 4
     }
   ],
-  "items": []
+  "items": [
+    {
+      "name": "Sandwich",
+      "price": "20.00",
+      "description": "Best Tuna Sandwich",
+      "qty": 100,
+      "userId": 2,
+      "catId": 2,
+      "id": 1
+    },
+  ]
 }

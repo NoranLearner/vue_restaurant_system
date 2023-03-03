@@ -1,5 +1,4 @@
 <template>
-
     <div class="container">
 
         <Navbar />
@@ -33,10 +32,10 @@
             <br />
 
             <div class="row g-3 align-items-center">
-                <div class="col-auto d-block mx-auto alert alert-success" v-if="successMessage.length>0">
+                <div class="col-auto d-block mx-auto alert alert-success" v-if="successMessage.length > 0">
                     {{ successMessage }}
                 </div>
-                <div class="col-auto d-block mx-auto alert alert-warning" v-if="errorMessage.length>0">
+                <div class="col-auto d-block mx-auto alert alert-warning" v-if="errorMessage.length > 0">
                     {{ errorMessage }}
                 </div>
             </div>
@@ -44,7 +43,6 @@
         </form>
 
     </div>
-
 </template>
 
 <script>
@@ -67,6 +65,8 @@ export default {
             userId: '',
             deleteLocation: '',
             locationData: '',
+            allItemsIdIs: [],
+            allCatsIdIs: [],
             successMessage: '',
             errorMessage: '',
         }
@@ -79,6 +79,24 @@ export default {
             this.deleteLocation = this.$route.params.locationId;
             this.userId = JSON.parse(user).id;
             this.canCurrentUserAccessThisLocation();
+
+            // All Items in This Location (KFC Restaurant)
+            // http://localhost:3000/items?locId=3
+            let result = await axios.get(`http://localhost:3000/items?locId=${this.locId}`);
+            let resultLength = result.data.length;
+            for (var i = 0; i < resultLength; i++) {
+                this.allItemsIdIs.push(result.data[i].id);
+            }
+
+            // All Categories in This Location (KFC Restaurant)
+            // http://localhost:3000/categories?locationId=3
+            // write locId or locationId depend on db.json file (database)
+            let resultCat = await axios.get(`http://localhost:3000/categories?locationId=${this.locId}`);
+            let resultCatLength = resultCat.data.length;
+            for (var i = 0; i < resultCatLength; i++) {
+                this.allCatsIdIs.push(resultCat.data[i].id);
+            }
+
         }
     },
     methods: {
@@ -101,10 +119,34 @@ export default {
             }
         },
         async deleteRestaurant() {
+
+            // For Items
+            let allItemsResults = [];
+            for (var i = 0; i < this.allItemsIdIs.length; i++) {
+                let result = await axios.delete(`http://localhost:3000/items/${this.allItemsIdIs[i]}`);
+                if (result.status == 200) {
+                    allItemsResults.push(true);
+                } else {
+                    allItemsResults.push(false);
+                }
+            }
+
+            // For Categories
+            let allCatsResults = [];
+            for (var i = 0; i < this.allCatsIdIs.length; i++) {
+                let result = await axios.delete(`http://localhost:3000/categories/${this.allCatsIdIs[i]}`);
+                if (result.status == 200) {
+                    allCatsResults.push(true);
+                } else {
+                    allCatsResults.push(false);
+                }
+            }
+
             // For Location
             let result = await axios.delete(`http://localhost:3000/locations/${this.deleteLocation}`);
 
-            if (result.status == 200) {
+
+            if (result.status == 200 && !allCatsResults.includes(false) && !allItemsResults.includes(false)) {
                 this.successMessage = 'Delete Location Successfully';
                 this.errorMessage = '';
                 setTimeout(() => {
@@ -119,6 +161,4 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
