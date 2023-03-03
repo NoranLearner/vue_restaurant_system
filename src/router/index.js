@@ -4,6 +4,10 @@ import SignUpView from '../views/SignUpView.vue'
 import LoginView from '../views/LoginView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import UpdateProfileView from '../views/UpdateProfileView.vue'
+import AddNewLocation from '@/components/Locations/AddNewLocation.vue'
+import DeleteLocation from '@/components/Locations/DeleteLocation.vue'
+import DeleteAllLocation from '@/components/Locations/DeleteAllLocation.vue'
+import UpdateLocation from '@/components/Locations/UpdateLocation.vue'
 import ErrorPageView from '../views/ErrorPageView.vue'
 
 const routes = [
@@ -39,6 +43,26 @@ const routes = [
     path: '/update-profile',
     name: 'update-profile',
     component: UpdateProfileView
+  },
+  {
+    path: '/add-new-location',
+    name: 'add-new-location',
+    component: AddNewLocation
+  },
+  {
+    path: '/delete-location/:locationId',
+    name: 'delete-location',
+    component: DeleteLocation
+  },
+  {
+    path: '/delete-all-locations',
+    name: 'delete-all-locations',
+    component: DeleteAllLocation
+  },
+  {
+    path: '/update-location/:locationId',
+    name: 'update-location',
+    component: UpdateLocation
   },
   // Last Stays
   {

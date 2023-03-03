@@ -12,5 +12,21 @@
       "password": "Ahmed Ahmed",
       "id": 2
     }
+  ],
+  "locations": [
+    {
+      "name": "Hooks Fish and Chips",
+      "phone": "00123456788",
+      "address": "Giza",
+      "userId": 1,
+      "id": 1
+    },
+    {
+      "name": "KFC Restaurant",
+      "phone": "01234567890",
+      "address": "Alex",
+      "userId": 1,
+      "id": 2
+    }
   ]
 }
