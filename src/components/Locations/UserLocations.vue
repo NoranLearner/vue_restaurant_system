@@ -32,6 +32,10 @@
                     <router-link :to="{name: 'delete-location', params: {locationId: loc.id}}">
                         <button class="btn btn-danger">Delete</button>
                     </router-link>
+                    &nbsp;
+                    <router-link :to="{name: 'menu', params: {locationId: loc.id}}">
+                        <button class="btn btn-secondary">Menu</button>
+                    </router-link>
                 </td>
             </tr>
         </tbody>

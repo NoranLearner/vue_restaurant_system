@@ -8,6 +8,7 @@ import AddNewLocation from '@/components/Locations/AddNewLocation.vue'
 import DeleteLocation from '@/components/Locations/DeleteLocation.vue'
 import DeleteAllLocation from '@/components/Locations/DeleteAllLocation.vue'
 import UpdateLocation from '@/components/Locations/UpdateLocation.vue'
+import Menu from '@/components/Menu/Menu.vue'
 import ErrorPageView from '../views/ErrorPageView.vue'
 
 const routes = [
@@ -63,6 +64,11 @@ const routes = [
     path: '/update-location/:locationId',
     name: 'update-location',
     component: UpdateLocation
+  },
+  {
+    path: '/menu/location/:locationId',
+    name: 'menu',
+    component: Menu
   },
   // Last Stays
   {

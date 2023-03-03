@@ -1,32 +1,78 @@
 {
   "users": [
     {
-      "name": "Salah Bediwi",
-      "email": "salah@gmail.com",
-      "password": "salah Bediwi",
+      "name": "Salah Bedeiwi",
+      "email": "bedeiwi@umn.edu",
+      "password": "Salah Bedeiwi",
       "id": 1
     },
     {
       "name": "Ahmed Ahmed",
-      "email": "ahmed@gmail.com",
+      "email": "ahmed@123.com",
       "password": "Ahmed Ahmed",
       "id": 2
+    },
+    {
+      "name": "khaled khaled",
+      "email": "khaled@123.com",
+      "password": "khaled khaled",
+      "id": 3
+    },
+    {
+      "name": "Mazen Mazen",
+      "email": "mazen@mmm.com",
+      "password": "Mazen Mazen",
+      "id": 4
+    },
+    {
+      "name": "Amera Amera",
+      "email": "amera@aaa.com",
+      "password": "Amera Amera",
+      "id": 5
     }
   ],
   "locations": [
     {
       "name": "Hooks Fish and Chips",
-      "phone": "00123456788",
-      "address": "Giza",
-      "userId": 1,
+      "phone": "123456789011",
+      "address": "Minneapolis , Minnesota",
+      "userId": 2,
       "id": 1
     },
     {
-      "name": "KFC Restaurant",
-      "phone": "01234567890",
-      "address": "Alex",
-      "userId": 1,
+      "name": "Chicken and Meet",
+      "phone": "123456789011",
+      "address": "california",
+      "userId": 2,
       "id": 2
+    },
+    {
+      "name": "KFC Restaurant",
+      "phone": "123456789011",
+      "address": "Egypt",
+      "userId": 2,
+      "id": 3
     }
-  ]
+  ],
+  "categories": [
+    {
+      "name": "Breakfast",
+      "userId": 2,
+      "locationId": 3,
+      "id": 1
+    },
+    {
+      "name": "Lunch",
+      "userId": 2,
+      "locationId": 3,
+      "id": 2
+    },
+    {
+      "name": "Dinner",
+      "userId": 2,
+      "locationId": 3,
+      "id": 3
+    }
+  ],
+  "items": []
 }
