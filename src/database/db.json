@@ -82,13 +82,14 @@
   ],
   "items": [
     {
-      "name": "Sandwich",
+      "name": "Tuna Sandwich",
       "price": "20.00",
-      "description": "Best Tuna Sandwich",
       "qty": 100,
-      "userId": 2,
+      "description": "Best Tuna Sandwich",
       "catId": 2,
+      "locId": 3,
+      "userId": 2,
       "id": 1
-    },
+    }
   ]
 }

@@ -9,9 +9,11 @@
                 </button>
             </router-link>
 
-            <button type="button" class="btn btn-secondary float-end" v-if="numOfCategories > 0">
+            <router-link :to="{ name: 'add-new-item', params: { locId: locationId } }">
+                <button type="button" class="btn btn-secondary float-end" v-if="numOfCategories > 0">
                     Add New Items
                 </button>
+            </router-link>
         </div>
 
         <div class="clearfix"></div>

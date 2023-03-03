@@ -56,6 +56,17 @@ const mutations = {
       }
     }
   },
+  async canUserAccessThisItem(state, payload) {
+    let result = await axios.get(`
+    http://localhost:3000/items?userId=${payload.userIdIs}&locationId=${payload.locationIdIs}&id=${payload.itemIdIs}
+    `);
+    if (result.status == 200) {
+      state.listOfItems = result.data;
+      if (state.listOfItems.length < 1) {
+        this.commit("redirectTo", payload.redirectToPage);
+      }
+    }
+  }
 };
 
 const actions = {
